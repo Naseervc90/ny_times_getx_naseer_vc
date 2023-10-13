@@ -1,21 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ny_times_test/controller/ny_article_controller.dart';
+import 'package:ny_times_test/views/ny_article_details_screen.dart';
 import 'package:ny_times_test/views/ny_article_list_screen.dart';
-// Import your NyArticleListScreen
+
+
+import 'package:ny_times_test/app_strings.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final NyArticleController articleController = Get.put(NyArticleController());
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(NyTimesController());
     return GetMaterialApp(
-      title: 'Article App',
-      home: NyArticleListScreen(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      getPages: [
+        GetPage(
+          name: '/',
+          page: () => const ArticleListScreen(),
+        ),
+        GetPage(
+          name: AppStrings.articleDetailsNav,
+          page: () => const ArticleDetailsScreen(),
+        ),
+      ],
     );
   }
 }
+
+

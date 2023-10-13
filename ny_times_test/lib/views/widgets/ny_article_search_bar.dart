@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ny_times_test/controller/ny_article_controller.dart';
+import 'package:ny_times_test/data/model/article.dart';
 
 class NyArticleSearchDelegate extends SearchDelegate<String> {
   final List<Article> articles;
