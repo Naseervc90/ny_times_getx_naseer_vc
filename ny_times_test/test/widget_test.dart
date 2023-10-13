@@ -1,30 +1,43 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:ny_times_test/main.dart';
+import 'package:get/get.dart';
+import 'package:ny_times_test/controller/ny_article_controller.dart';
+import 'package:ny_times_test/views/ny_article_list_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  // Initialize the GetX environment
+  setUpAll(() {
+    Get.testMode = true;
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('NyArticleListScreen UI Test', (WidgetTester tester) async {
+    // Create a test ArticleController with some sample articles
+    final testController = NyArticleController();
+    testController.articles.assignAll([
+      Article(
+        title: 'Article 1',
+        detail1: 'Detail 1 of Article 1',
+        detail2: 'Detail 2 of Article 1',
+        detail3: 'Detail 3 of Article 1',
+        username: 'User1',
+        date: '2023-10-13',
+      ),
+      // Add more sample articles here
+    ]);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Build the NyArticleListScreen widget
+    await tester.pumpWidget(
+      GetMaterialApp(
+        home: NyArticleListScreen(),
+        initialBinding: BindingsBuilder(() {
+          Get.put<NyArticleController>(testController);
+        }),
+      ),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that the NyArticleListScreen is displayed
+    expect(find.text('Article List'), findsOneWidget);
+
+    // You can add more test assertions here to verify the UI elements as needed
   });
 }
